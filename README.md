@@ -1,0 +1,1 @@
+(Ajouter boutons pour afficher phéromones et masquer le territoire non découvert)

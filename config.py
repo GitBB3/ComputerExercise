@@ -1,1 +1,7 @@
-#simulation parameters
+####################################################################
+################## Simulation parameters ###########################
+####################################################################
+
+GRID_H = 60
+GRID_W = 80
+CELL = 15 #size of a cell in the environment grid in pixels
