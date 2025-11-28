@@ -22,3 +22,8 @@ MAX_OBJ = 25
 
 ### Ants quantity
 NB_ANTS = 10
+
+### Pheromones caracteristics
+PHEROMONES_AMOUNT = 2.0
+EVAPORATION_RATE = 0.02
+DIFFUSION_RATE = 0.01
