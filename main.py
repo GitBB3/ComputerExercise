@@ -10,7 +10,7 @@ def main():
                       cf.NB_FOOD_CLUSTERS, cf.FOOD_CLUSTER_SIZE, 
                       cf.NB_OBSTACLES_CLUSTERS, cf.OBSTACLES_CLUSTER_SIZE, 
                       cf.MIN_OBJ, cf.MAX_OBJ)
-    ants = [Ant(env.nest[1], env.nest[0]) for _ in range(cf.NB_ANTS)]
+    ants = [Ant(env.nest[1], env.nest[0], Environment(cf.GRID_W,cf.GRID_H,cf.NEST_W,cf.NEST_H,cf.NB_FOOD_CLUSTERS,cf.FOOD_CLUSTER_SIZE,cf.NB_OBSTACLES_CLUSTERS,cf.OBSTACLES_CLUSTER_SIZE,cf.MIN_OBJ,cf.MAX_OBJ), PheromoneMap(cf.GRID_W, cf.GRID_H)) for _ in range(cf.NB_ANTS)]
     pmap = PheromoneMap(cf.GRID_W, cf.GRID_H)
     gui = SimulationGUI(env, ants, pmap)
     gui.run()

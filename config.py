@@ -21,7 +21,7 @@ MIN_OBJ = 10
 MAX_OBJ = 25
 
 ### Ants quantity
-NB_ANTS = 10
+NB_ANTS = 20
 
 ### Pheromones caracteristics
 PHEROMONES_AMOUNT = 2.0

@@ -15,6 +15,9 @@ class Environment:
         self.max_obj = max_obj
         self.generate_objects_clusters()
 
+    def is_inside(self, x, y):
+        return 0 <= x < self.width and 0 <= y < self.height
+
     def generate_objects_clusters(self):
         """
         Generate a random environment with objects scattered in clusters around the environment, depending on the configuration parameters.
@@ -34,3 +37,8 @@ class Environment:
                         and 0<=oY<self.height
                         and self.grid[oY][oX]=='empty'):
                             self.grid[oY][oX]= object
+    
+    def get_type(self, x, y):
+        if self.is_inside(x,y):
+            return self.grid[y][x]
+        return 'obstacle'
