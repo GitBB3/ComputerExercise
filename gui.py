@@ -34,7 +34,8 @@ class SimulationGUI:
         self.pmap.evaporate()
         self.pmap.diffuse()
         for ant in self.ants:
-            ant.move(self.env, self.pmap)
+            ant.move_on_memory(self.env, self.pmap)
+
 
         self.draw()
 
@@ -76,5 +77,10 @@ class SimulationGUI:
                     color='blue'
                     self.canvas.create_rectangle(x*cf.CELL, y*cf.CELL, (x+1)*cf.CELL, (y+1)*cf.CELL, fill=color, outline="")
 
-        for ant in self.ants:
-            self.canvas.create_rectangle(ant.x*cf.CELL, ant.y*cf.CELL, (ant.x+1)*cf.CELL, (ant.y+1)*cf.CELL, fill="yellow", outline="")
+        for ant in self.ants: # Differentiate ants carrying food or not
+            if not ant.carrying:
+                self.canvas.create_rectangle(ant.x*cf.CELL, ant.y*cf.CELL, (ant.x+1)*cf.CELL, (ant.y+1)*cf.CELL, fill="yellow", outline="")
+                self.canvas.create_rectangle(ant.x*cf.CELL+cf.CELL//3, ant.y*cf.CELL+cf.CELL//3, (ant.x+1)*cf.CELL-cf.CELL//3, (ant.y+1)*cf.CELL-cf.CELL//3, fill="black", outline="")
+            else:
+                self.canvas.create_rectangle(ant.x*cf.CELL, ant.y*cf.CELL, (ant.x+1)*cf.CELL, (ant.y+1)*cf.CELL, fill="yellow", outline="")
+                self.canvas.create_rectangle(ant.x*cf.CELL+cf.CELL//3, ant.y*cf.CELL+cf.CELL//3, (ant.x+1)*cf.CELL-cf.CELL//3, (ant.y+1)*cf.CELL-cf.CELL//3, fill="green", outline="")

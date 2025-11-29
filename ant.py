@@ -15,7 +15,7 @@ class Ant:
         """
         The ant detects pheromones and obstacles around itself to update its local knowledge of the environment.
         """
-        directions = [(-1,0), (1,0), (0,-1), (0,1), (-1,-1), (1,-1), (1,1), (-1,1)]
+        directions = [(0,0), (-1,0), (1,0), (0,-1), (0,1), (-1,-1), (1,-1), (1,1), (-1,1)]
         for dx, dy in directions:
             if env.is_inside(self.x + dx, self.y + dy):
                 if self.env_memory.grid[self.y + dy][self.x + dx] != env.get_type(self.x + dx, self.y + dy):
@@ -23,7 +23,7 @@ class Ant:
                 if self.p_memory.pmap[self.y + dy][self.x + dx] != p_map.get(self.x + dx, self.y + dy):
                     self.p_memory.pmap[self.y + dy][self.x + dx] = p_map.get(self.x + dx, self.y + dy)
 
-    def explore_rd(self, env, p_map):
+    def explore_rd(self, env):
         """
         Find food in the environment.
         """
@@ -35,9 +35,6 @@ class Ant:
         if env.grid[self.y][self.x] == 'food': # if the ant finds food
             self.carrying = True # carries the food
             env.grid[self.y][self.x] = 'empty' # the food is not on the cell anymore
-        
-    def explore_ph(self, env, p_map):
-        pass
     
     def back_nest_bug2(self, env):
         """
@@ -74,8 +71,42 @@ class Ant:
     def move(self, env, p_map):
         if not self.carrying:
             self.scan_environment(env, p_map)
-            self.explore_rd(env, p_map)
+            self.explore_rd(env)
         else:
             self.back_nest_bug2(env)
             p_map.add(self.x, self.y)
             self.scan_environment(env, p_map)
+    
+    def explore_ph(self, env):
+        """
+        Use a gradient descent on the local map of pheromones (p_memory) to find the location of food.
+        """
+        directions = [(-1,0), (1,0), (0,-1), (0,1), (-1,-1), (1,-1), (1,1), (-1,1)]
+        moves = [(dx, dy, self.p_memory.pmap[self.y + dy][self.x + dx])
+                 for dx, dy in directions
+                 if self.env_memory.is_inside(self.x + dx, self.y + dy) and self.env_memory.grid[self.y + dy][self.x + dx] != 'obstacle'
+                 ]
+        dx, dy, max_pheromones = max(moves, key=lambda m: m[2])
+        current_dist = math.hypot(self.x - self.nest[0], self.y - self.nest[1])
+        new_dist = math.hypot(self.x + dx - self.nest[0], self.y + dy - self.nest[1])
+
+        if max_pheromones > 0.0 and new_dist > current_dist: # if pheromones are detected around the ant and if the trail of pheromone enables to go further from the nest
+            if self.env_memory.get_type(self.x + dx, self.y + dy) != 'obstacle':
+                self.x += dx
+                self.y += dy
+        
+        else: # if no pheromones are detected around the ant or if pheromones lead toward the nest
+            self.explore_rd(self.env_memory)
+        
+        if env.grid[self.y][self.x] == 'food': # if the ant finds food
+                self.carrying = True # carries the food
+                env.grid[self.y][self.x] = 'empty' # the food is not on the cell anymore
+        
+    def move_on_memory(self, env, p_map):
+        if not self.carrying:
+            self.scan_environment(env, p_map) # scan the real environment (env, p_map)
+            self.explore_ph(env) # look for food based on decentered knowledge (env_memory, p_memory)
+        else:
+            self.back_nest_bug2(self.env_memory) # bug2 algorithm to retrieve food based on decentered knowledge (env_memory, p_memory)
+            p_map.add(self.x, self.y) # add pheromones on the real environment (env, p_map)
+            self.scan_environment(env, p_map) # scan the real environment (env, p_map)
