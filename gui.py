@@ -34,8 +34,7 @@ class SimulationGUI:
         self.pmap.evaporate()
         self.pmap.diffuse()
         for ant in self.ants:
-            ant.explore_rd(self.env, self.pmap)
-            self.pmap.add(ant.x, ant.y)
+            ant.move(self.env, self.pmap)
 
         self.draw()
 
@@ -45,7 +44,7 @@ class SimulationGUI:
     def run(self):
         self.root.mainloop()
 
-    def pheromone_color(self, p, max_p):
+    def pheromone_color(self, p, max_p): #note: becomes very bright when every potential is very low
             intensity = int((p/max_p)*255)
             return f"#{intensity:02x}0000"
 

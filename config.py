@@ -6,8 +6,8 @@
 SPEED = 100 # ms between steps
 
 ### Environment size
-GRID_H = 50 # height of the environment
-GRID_W = 80 # width of the environment
+GRID_H = 30 # height of the environment
+GRID_W = 60 # width of the environment
 CELL = 15 # size of a cell in the environment grid in pixels
 NEST_H = GRID_H // 2 # position of the nest (set to the middle of the environment)
 NEST_W = GRID_W // 2
