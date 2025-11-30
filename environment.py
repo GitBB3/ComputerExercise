@@ -13,6 +13,9 @@ class Environment:
         self.obstacle_cluster_size = obstacle_cluster_size
         self.min_obj = min_obj
         self.max_obj = max_obj
+        self.food_collected = 0
+        self.food_total = 0
+        self.distance_walked = 0
         self.generate_objects_clusters()
 
     def is_inside(self, x, y):
@@ -37,6 +40,7 @@ class Environment:
                         and 0<=oY<self.height
                         and self.grid[oY][oX]=='empty'):
                             self.grid[oY][oX]= object
+                            if object == 'food': self.food_total += 1 # counting 
     
     def get_type(self, x, y):
         if self.is_inside(x,y):

@@ -11,18 +11,30 @@ class SimulationGUI:
         self.env = env
         self.ants = ants
         self.pmap = pmap
+        self.duration = 0
+        ### Window for ACO
         self.root = tk.Tk()
         self.root.title("Ant Colony Simulation")
         self.canvas = tk.Canvas(
              self.root, width=env.width*cf.CELL, height=env.height*cf.CELL, bg="black"
         )
         self.canvas.pack()
+        ### Interface window
+        self.info_window = tk.Toplevel(self.root)
+        self.info_window.title("ACO Interface")
+        self.info_window.geometry("400x200")
+        self.info_label = tk.Label(self.info_window, text="Press <space> to START.", justify="left", anchor="nw", font=("Consolas",10))
+        self.info_label.pack(fill="both", expand="True", padx=10, pady=10)
+
         self.running = False
+        self.over = False
         self.root.bind("<space>", self.toggle)
 
         self.draw()
 
     def toggle(self, event=None):
+        if self.over:
+            return
         self.running = not self.running
         if self.running:
             self.step()
@@ -36,8 +48,14 @@ class SimulationGUI:
         for ant in self.ants:
             ant.move_on_memory(self.env, self.pmap)
 
+        self.duration += cf.SPEED
+
+        if self.env.food_collected == self.env.food_total: # end the simulation
+            self.over = True 
+            self.running = False
 
         self.draw()
+        self.update_feedback()
 
         if self.running:
             self.root.after(cf.SPEED, self.step)
@@ -48,6 +66,14 @@ class SimulationGUI:
     def pheromone_color(self, p, max_p): #note: becomes very bright when every potential is very low
             intensity = int((p/max_p)*255)
             return f"#{intensity:02x}0000"
+
+    def update_feedback(self):
+        info_text = (f"Duration (s): {self.duration/1000}\n"
+                     f"Units of food collected: {self.env.food_collected}/{self.env.food_total}\n"
+                     f"Distance walked by ants (distance units): {self.env.distance_walked}\n"
+                     f"Running: {self.running} (Press <space> to PAUSE)\n"
+                     f"Completed: {self.over}")
+        self.info_label.config(text=info_text)
 
     def draw(self):
         """
