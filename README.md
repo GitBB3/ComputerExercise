@@ -17,8 +17,9 @@
     - OK modifier paramètres de config (pheromones characteristics and ant quantity)
     - OK le nombre de déplacements de toutes les fourmis
 
-a) Comparison with full random
-b) graphs in interface
-c) fix dead ends near borders ("pheromones traps") = fix gradient descent
-d) add possibilities in config_w: quantité clusters & food
-e) interface plus user friendly
+a) TODO Comparison with full random
+b) ~ graphs in interface
+c) TODO fix dead ends near borders ("pheromones traps") = fix gradient descent
+d) TODO add possibilities in config_w: quantité clusters & food
+e) "OK" interface plus user friendly
+f) PDF CR, focus on gradient descent and decentralised knowledge

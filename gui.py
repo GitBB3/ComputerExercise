@@ -21,9 +21,10 @@ class SimulationGUI:
         self.canvas.pack()
         ### Interface window
         self.info_window = tk.Toplevel(self.root)
-        self.info_window.title("ACO Interface")
-        self.info_window.geometry("400x200")
-        self.info_label = tk.Label(self.info_window, text="Press <space> to START.", justify="left", anchor="nw", font=("Consolas",10))
+        self.info_window.title("ACO Feedback")
+        self.info_window.geometry("400x100")
+        self.info_window.configure(bg="#A9F7E3")
+        self.info_label = tk.Label(self.info_window, text="Press <space> to START.", justify="left", anchor="nw", font=("Consolas",10), bg="#000000", fg="#A9F7E3")
         self.info_label.pack(fill="both", expand="True", padx=10, pady=10)
 
         self.running = False
