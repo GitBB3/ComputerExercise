@@ -47,5 +47,7 @@ class PheromoneMap:
                 for dx, dy in [(-1,0), (1,0), (0,-1), (0,1), (-1,-1), (1,-1), (1,1), (-1,1)]: # all cells around
                     if self.is_inside(x + dx, y + dy):
                         new_potential += self.pmap[y+dy][x+dx] * diffusion_rate # augmentation of pheromones due to the diffusion in neighbouring cells
+                    else:
+                        new_potential += self.pmap[y][x] * diffusion_rate # convention to maintain continuity of pheromone intensity at the border of the environment
                 new_pmap[y][x] = new_potential
         self.pmap = new_pmap

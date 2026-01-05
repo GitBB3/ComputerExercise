@@ -94,7 +94,7 @@ class Ant:
         current_dist = math.hypot(self.x - self.nest[0], self.y - self.nest[1])
         new_dist = math.hypot(self.x + dx - self.nest[0], self.y + dy - self.nest[1])
 
-        if max_pheromones > 0.0 and new_dist > current_dist: # if pheromones are detected around the ant and if the trail of pheromone enables to go further from the nest
+        if max_pheromones > 0.10 and new_dist > current_dist: # if pheromones are detected over a given threshold (0.10) around the ant and if the trail of pheromone enables to go further from the nest
             if self.env_memory.get_type(self.x + dx, self.y + dy) != 'obstacle':
                 self.x += dx
                 self.y += dy
