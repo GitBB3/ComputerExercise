@@ -81,7 +81,7 @@ class Ant:
             p_map.add(self.x, self.y)
             self.scan_environment(env, p_map)
     
-    def explore_ph(self, env):
+    def explore_ph(self, env, method):
         """
         Use a gradient descent on the local map of pheromones (p_memory) to find the location of food.
         """
@@ -95,7 +95,8 @@ class Ant:
         new_dist = math.hypot(self.x + dx - self.nest[0], self.y + dy - self.nest[1])
 
         if max_pheromones > 0.10 and new_dist > current_dist: # if pheromones are detected over a given threshold (0.10) around the ant and if the trail of pheromone enables to go further from the nest
-            if self.env_memory.get_type(self.x + dx, self.y + dy) != 'obstacle':
+            rd_ph = rd.uniform(0,1) # choose to what extent the model is following the pheromone model or the random model
+            if self.env_memory.get_type(self.x + dx, self.y + dy) != 'obstacle' and rd_ph <= method:
                 self.x += dx
                 self.y += dy
                 env.distance_walked +=1
@@ -107,10 +108,10 @@ class Ant:
                 self.carrying = True # carries the food
                 env.grid[self.y][self.x] = 'empty' # the food is not on the cell anymore
         
-    def move_on_memory(self, env, p_map):
+    def move_on_memory(self, env, p_map, method):
         if not self.carrying:
             self.scan_environment(env, p_map) # scan the real environment (env, p_map)
-            self.explore_ph(env) # look for food based on decentered knowledge (env_memory, p_memory)
+            self.explore_ph(env, method) # look for food based on decentered knowledge (env_memory, p_memory)
         else:
             self.back_nest_bug2(self.env_memory,env) # bug2 algorithm to retrieve food based on decentered knowledge (env_memory, p_memory)
             p_map.add(self.x, self.y) # add pheromones on the real environment (env, p_map)

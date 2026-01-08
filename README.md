@@ -46,3 +46,5 @@ I consider two ways to improve the efficiency of the ants to bring food to their
 The exploration part will be focused in comparing the efficiency of my algorithm with a random search, while the obstacle avoidance optimization part would consist in searching for the most efficient algorithm to avoid clusters of obstacles. As my project is focused on the ant optimization, I will first focus on providing the relevant feedback to assess the efficiency of my algorithm, while displaying no obstacle in the environment. Then, I might research what is the best algorithm to avoid clusters of obstacles and implement it. Nevertheless, those are too different problems related to objects located in clusters which should be adressed separately.
 
 - average distance on the last few ants, walked by ants on a food trip from nest to nest, with only one cluster of food (otherwise the value is not relevant)
+- distance walked by the ants seems weird
+CHANTIER!!!!! Changer la def de env et ants après le choix des paramètres et donc afficher l'environnement uniquement après qu'ils aient été confirmés
