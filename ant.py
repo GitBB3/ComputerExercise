@@ -31,7 +31,7 @@ class Ant:
         if env.is_inside(self.x + dx, self.y + dy) and env.get_type(self.x + dx, self.y + dy)!='obstacle' :
             self.x = self.x + dx
             self.y = self.y + dy
-            env.distance_walked +=1
+            env_real.distance_walked +=1
 
         if env_real.grid[self.y][self.x] == 'food': # if the ant finds food
             self.carrying = True # carries the food
@@ -54,7 +54,7 @@ class Ant:
             else:
                 self.x += step_x
                 self.y += step_y
-                env.distance_walked +=1
+                env_real.distance_walked +=1
         elif self.avoiding_obstacle: # Bug2 algo to avoid obstacles
             directions = [(-1,0), (1,0), (0,-1), (0,1), (-1,-1), (1,-1), (1,1), (-1,1)]
             for step_x, step_y in directions:
@@ -62,7 +62,7 @@ class Ant:
                     if env.grid[self.y + step_y][self.x + step_x]!='obstacle':
                         self.x += step_x
                         self.y += step_y
-                        env.distance_walked +=1
+                        env_real.distance_walked +=1
                         break
             new_dist = math.hypot(self.nest[0] - self.x, self.nest[1] - self.y)
             if new_dist < self.collision_dist:
@@ -96,10 +96,13 @@ class Ant:
 
         if max_pheromones > 0.10 and new_dist > current_dist: # if pheromones are detected over a given threshold (0.10) around the ant and if the trail of pheromone enables to go further from the nest
             rd_ph = rd.uniform(0,1) # choose to what extent the model is following the pheromone model or the random model
-            if self.env_memory.get_type(self.x + dx, self.y + dy) != 'obstacle' and rd_ph <= method:
-                self.x += dx
-                self.y += dy
-                env.distance_walked +=1
+            if rd_ph <= method:
+                if self.env_memory.get_type(self.x + dx, self.y + dy) != 'obstacle':
+                    self.x += dx
+                    self.y += dy
+                    env.distance_walked +=1
+            else:
+                self.explore_rd(self.env_memory,env)
         
         else: # if no pheromones are detected around the ant or if pheromones lead toward the nest
             self.explore_rd(self.env_memory,env)

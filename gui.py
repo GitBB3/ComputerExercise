@@ -95,12 +95,12 @@ class SimulationGUI:
                             highlightthickness=0
                             )
         self.pot.pack(fill="y", expand=True, padx=10, pady=10)
-    
+        self.pot.set(1) # Initialize the model to a full pheromone usage
 
         self.sidefb = tk.Frame(self.body, width=600, bg="#3B1F1F")
         self.sidefb.pack(side="left", fill="y")
 
-        self.param_frame = tk.Frame(self.sidefb, bg="#92BC7E") # TODO: change the initialization to tk.Entry()
+        self.param_frame = tk.Frame(self.sidefb, bg="#92BC7E")
         self.param_frame.pack(side="top", fill="x")
         param_label = tk.Label(self.param_frame,
                  text="PARAMETERS",
@@ -148,7 +148,7 @@ class SimulationGUI:
         self.title_label.pack(fill="x", padx=5)
 
         self.duration_label = tk.Label(self.sidefb,
-                                       text=f"Duration: {self.duration/1000:.1f} s",
+                                       text=f"Duration: {self.duration/1000:.1f} time unit",
                                        fg="white",
                                        bg="#3B1F1F",
                                        anchor="w")
@@ -258,7 +258,7 @@ class SimulationGUI:
         for ant in self.ants:
             ant.move_on_memory(self.env, self.pmap, self.pot.get())
 
-        self.duration += cf.SPEED
+        self.duration += cf.STEP_TIME
 
         if self.env.food_collected == self.env.food_total: # end the simulation
             self.over = True 
@@ -269,13 +269,13 @@ class SimulationGUI:
         self.update_graphs()
 
         if self.running:
-            self.root.after(cf.SPEED, self.step)
+            self.root.after(cf.STEP_TIME, self.step)
     
     def pheromone_color(self, p, max_p): #note: becomes very bright when every potential is very low
             return"#{:02x}{:02x}{:02x}".format(*[int(a+(b-a)*(p/max_p if max_p else 0))for a,b in zip((59,31,31),(224,48,48))]) # just a color interpolation
 
     def update_feedback(self):
-        self.duration_label.config(text=f"Duration: {self.duration/1000:.1f} s")
+        self.duration_label.config(text=f"Duration: {self.duration/1000:.1f} time unit")
         self.distance_label.config(text=f"Distance walked by the ants: {self.env.distance_walked} units")
 
     def update_graphs(self):

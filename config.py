@@ -3,11 +3,11 @@
 ####################################################################
 
 ### Simulation parameters
-SPEED = 100 # ms between steps
+STEP_TIME = 100 # ms between steps
 
 ### Environment size
 GRID_H = 30 # height of the environment
-GRID_W = 60 # width of the environment
+GRID_W = 30 # width of the environment
 CELL = 15 # size of a cell in the environment grid in pixels
 NEST_H = GRID_H // 2 # position of the nest (set to the middle of the environment)
 NEST_W = GRID_W // 2
@@ -23,7 +23,7 @@ MAX_OBJ = 25
 ### Ants quantity
 NB_ANTS = 30
 
-### Pheromones caracteristics
+### Pheromones characteristics
 PHEROMONES_AMOUNT = 2.0
 EVAPORATION_RATE = 0.01
 DIFFUSION_RATE = 0.01
